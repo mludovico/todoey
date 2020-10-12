@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:todoey/models/task.dart';
 
 class NewTaskModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    final TextEditingController _controller = TextEditingController();
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(
@@ -36,10 +39,17 @@ class NewTaskModal extends StatelessWidget {
                   TextField(
                     autofocus: true,
                     textAlign: TextAlign.center,
+                    controller: _controller,
                   ),
                   FlatButton(
                     color: Colors.lightBlueAccent,
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.of(context).pop(
+                        Task(
+                          name: _controller.text,
+                        ),
+                      );
+                    },
                     child: Text(
                       'ADD',
                       style: TextStyle(

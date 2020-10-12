@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey/models/task.dart';
+import 'package:todoey/models/task_data.dart';
 import 'package:todoey/widgets/new_task_modal.dart';
 import 'package:todoey/widgets/task_list.dart';
 
 class MainScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    final taskData = Provider.of<TaskData>(context);
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
       body: Column(
@@ -13,7 +18,6 @@ class MainScreen extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(top: 60, left: 30, right: 30, bottom: 30),
             child: Column(
-
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
@@ -35,7 +39,7 @@ class MainScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'No of Tasks',
+                  '${taskData.taskCount} Tasks',
                   style: TextStyle(
                     color: Colors.white
                   ),
@@ -65,11 +69,15 @@ class MainScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightBlueAccent,
         child: Icon(Icons.add),
-        onPressed: () async  => await showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (context) => NewTaskModal(),
-        ),
+        onPressed: () async {
+          Task newTask = await showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) => NewTaskModal(),
+          );
+          print(newTask.name);
+          taskData.addTask(newTask);
+        },
       ),
     );
   }
